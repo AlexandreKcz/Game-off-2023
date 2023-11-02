@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
     private bool groundedPlayer;
 
+    public bool lockPlayer = false;
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (lockPlayer) return;
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
