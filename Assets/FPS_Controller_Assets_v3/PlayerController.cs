@@ -63,4 +63,11 @@ public class PlayerController : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
     }
+
+    public void TeleportPlayer(Vector3 position)
+    {
+        controller.enabled = false;
+        this.transform.position = position;
+        controller.enabled = true;
+    }
 }
