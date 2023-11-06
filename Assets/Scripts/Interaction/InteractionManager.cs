@@ -4,36 +4,27 @@ using UnityEngine;
 
 public class InteractionManager : MonoBehaviour
 {
-    private InputManager _inputManager;
+    public Camera Camera
+    {
+        get { return _camera; }
+        set { _camera = value; }
+    }
 
-    [SerializeField] private Camera _camera;
+    [SerializeField] private LayerMask interactionLayer;
 
-    [SerializeField] private LayerMask _interactionLayer;
+    [Range(0f, 20f)] [SerializeField] private float interactionDistance = 10f;
 
-    [Range(0f, 20f)] [SerializeField] private float _interactionDistance = 10f;
-
+    private Camera _camera;
     private void Awake()
     {
-        _inputManager = InputManager.Instance;
-
-        if(_inputManager == null)
-        {
-            _inputManager = FindObjectOfType<InputManager>();
-        }
-
         _camera = Camera.main;
     }
 
-    private void Update()
-    {
-        if (_inputManager.PlayerInteractThisFrame()) checkForInteraction();
-    }
-
-    private void checkForInteraction()
+    public void checkForInteraction()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, _interactionDistance, _interactionLayer))
+        if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, interactionDistance, interactionLayer))
         {
             Interactable inter = hit.transform.gameObject.GetComponent<Interactable>();
 

@@ -5,72 +5,39 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    #region tweaks
-    [Header("Controller Tweaks")]
-    [SerializeField]
-    private float playerSpeed = 2.0f;
-    [SerializeField]
-    private float jumpHeight = 1.0f;
-    [SerializeField]
-    private float gravityValue = -9.81f;
-    #endregion
+    [SerializeField][Tooltip("main Camera for interaction & locomotion")] private Camera playerCamera;
 
-    private CharacterController controller;
-    private InputManager inputManager;
+    private InputManager _inputManager;
+    private PlayerLocomotion _locomotion;
+    private InteractionManager _interaction;
 
-    private Transform cameraTransform;
-
-    private Vector3 playerVelocity;
-
-    private bool groundedPlayer;
-
-    public bool lockPlayer = false;
-
-    private void Start()
+    private void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        _inputManager = InputManager.Instance;
 
-        inputManager = InputManager.Instance;
+        if(_inputManager == null)
+        {
+            _inputManager = FindObjectOfType<InputManager>();
+            Debug.LogWarning("InputManager.Instance is null when calling instance from PlayerController, setting from FindObjectOfType");
 
-        cameraTransform = Camera.main.transform;
+        }
+
+        _locomotion = GetComponent<PlayerLocomotion>();
+        _interaction = GetComponent<InteractionManager>();
+
+        _locomotion.Camera = playerCamera;
+        _interaction.Camera = playerCamera;
     }
 
-    void Update()
+    private void Update()
     {
-        if (lockPlayer) return;
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
+        float delta = Time.deltaTime; //utilisation d'un delta universel obligatoire
 
-        Vector2 movement = inputManager.GetPlayerMovement();
-        Vector3 move = new Vector3(movement.x, 0f, movement.y);
+        Vector2 movement = _inputManager.GetPlayerMovement();
+        bool playerJumped = _inputManager.PlayerJumpedThisFrame();
+        bool playerInteracted = _inputManager.PlayerInteractThisFrame();
 
-        move = cameraTransform.forward * move.z + cameraTransform.right * move.x;
-        move.y = 0;
-
-        controller.Move(move * Time.deltaTime * playerSpeed);
-
-        if (move != Vector3.zero)
-        {
-            gameObject.transform.forward = move;
-        }
-
-        // Changes the height position of the player..
-        if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        }
-
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
-    }
-
-    public void TeleportPlayer(Vector3 position)
-    {
-        controller.enabled = false;
-        this.transform.position = position;
-        controller.enabled = true;
+        _locomotion.UpdatePlayerLocomotion(movement, playerJumped, delta);
+        if (playerInteracted) _interaction.checkForInteraction();
     }
 }
