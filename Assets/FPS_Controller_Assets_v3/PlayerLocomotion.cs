@@ -55,7 +55,14 @@ public class PlayerLocomotion : MonoBehaviour
 
         Vector3 move = new Vector3(movement.x, 0f, movement.y);
 
-        move = _cameraTransform.forward * move.z + _cameraTransform.right * move.x;
+        Vector3 _normalizedCamVectorForward = _cameraTransform.forward;
+        _normalizedCamVectorForward.y = 0;
+        _normalizedCamVectorForward.Normalize();
+        Vector3 _normalizedCamVectorRight = _cameraTransform.right;
+        _normalizedCamVectorRight.y = 0;
+        _normalizedCamVectorRight.Normalize();
+
+        move = _normalizedCamVectorForward * move.z + _normalizedCamVectorRight * move.x;
         move.y = 0;
 
         _controller.Move(move * delta * playerSpeed);
