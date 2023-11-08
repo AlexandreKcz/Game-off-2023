@@ -25,6 +25,10 @@ public class PlayerLocomotion : MonoBehaviour
     private float jumpHeight = 1.0f;
     [SerializeField]
     private float gravityValue = -9.81f;
+    [Range(0f, 20f)] [SerializeField]
+    private float climbSpeed = 2.0f;
+    [Range(0f, 20f)] [SerializeField]
+    private float climbAngleOffset = 2.0f;
     #endregion
 
     private CharacterController _controller;
@@ -47,6 +51,19 @@ public class PlayerLocomotion : MonoBehaviour
     public void UpdatePlayerLocomotion(Vector2 movement, bool playerJumpedThisFrame, float delta)
     {
         if (_lockPlayer) return;
+
+        // Check if the player is climbing a ladder
+        RaycastHit climbPoint;
+        bool isClimbingLadder = Physics.Raycast(gameObject.transform.position, new Vector3(_cameraTransform.forward.x, 0, _cameraTransform.forward.z), out climbPoint, 0.75f, LayerMask.GetMask("Ladder"));
+        Vector3 normalLadderReflect = Vector3.Reflect(climbPoint.normal, climbPoint.normal);
+
+        if (isClimbingLadder && (Mathf.Abs(gameObject.transform.forward.x - normalLadderReflect.x) < climbAngleOffset && Mathf.Abs(gameObject.transform.forward.z - normalLadderReflect.z) < climbAngleOffset))
+		{
+            Vector3 moveClimb = new Vector3(0f, movement.y*climbSpeed, 0f);
+            _controller.Move(moveClimb * delta);
+            return;
+        }
+
         groundedPlayer = _controller.isGrounded;
         if (groundedPlayer && _playerVelocity.y < 0)
         {
