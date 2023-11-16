@@ -14,9 +14,20 @@ public class CinemachinePOVExtension : CinemachineExtension
     private InputManager inputManager;
     private Vector3 startingRotation;
 
+    private Vector3 _overrideRotation;
+
+    public Vector3 OverrideRotation
+    {
+        get { return _overrideRotation; }
+        set { 
+            _overrideRotation = value;
+            overrideCamPos = true;
+        }
+    }
+
     public bool lockCam = false;
 
-    public bool resetCamPos = false;
+    private bool overrideCamPos = false;
 
     protected override void Awake()
     {
@@ -37,12 +48,13 @@ public class CinemachinePOVExtension : CinemachineExtension
             if(stage == CinemachineCore.Stage.Aim)
             {
                 if (startingRotation == null) startingRotation = transform.localRotation.eulerAngles;
-                if (resetCamPos)
+                if (overrideCamPos)
                 {
                     Debug.Log("Reseting Cam Pos");
-                    startingRotation = new Vector3(90,0,0);
+                    //startingRotation = new Vector3(90,0,0);
+                    startingRotation = this._overrideRotation;
                     state.RawOrientation = Quaternion.Euler(startingRotation);
-                    resetCamPos = false;
+                    overrideCamPos = false;
                     return;
                 }
                 Vector2 deltaInput = inputManager.GetMouseDelta();
