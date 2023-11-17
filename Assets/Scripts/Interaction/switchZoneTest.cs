@@ -7,17 +7,35 @@ using UnityEngine.Rendering;
 public class switchZoneTest : Interactable
 {
     [Header("Assignables")]
-    [SerializeField] private Transform spawnTeleport;
-    [SerializeField] private PlayerLocomotion locomotion;
-    [SerializeField] private CinemachineVirtualCamera playerVcam;
-    [SerializeField] private CinemachineVirtualCamera transitionVcam;
-    [SerializeField] private CinemachinePOVExtension pov;
-    [SerializeField] private Volume transitionVolume;
+    [SerializeField] private Transform _spawnTeleport;
+    [SerializeField] private CinemachineVirtualCamera _transitionVcam;
+
+    [Header("Static Components")]
+    private static PlayerLocomotion _locomotion;
+    private static CinemachineVirtualCamera _playerVcam;
+    private static CinemachinePOVExtension _pov;
+    private static Volume _transitionVolume;
 
     [Header("Tweakables")]
-    [SerializeField][Tooltip("cam final rotation on transition end")] private Vector3 camRotationOveride = Vector3.zero;
-    [SerializeField][Tooltip("transition time, must be changed in cmBrain too")] private float transitionTime = .5f;
+    [SerializeField][Tooltip("cam final rotation on transition end")] private Vector3 _camRotationOveride = Vector3.zero;
+    [SerializeField][Tooltip("transition time, must be changed in cmBrain too")] private float _transitionTime = .25f;
 
+    private void Awake()
+    {
+        GameObject player = GameObject.Find("Player");
+
+        if(switchZoneTest._locomotion == null) switchZoneTest._locomotion = player.GetComponent<PlayerLocomotion>();
+        if(switchZoneTest._playerVcam == null)
+        {
+            switchZoneTest._playerVcam = GameObject.Find("Player Virtual Camera").GetComponent<CinemachineVirtualCamera>();
+            switchZoneTest._pov = switchZoneTest._playerVcam.gameObject.GetComponent<CinemachinePOVExtension>();
+        }
+
+        if(switchZoneTest._transitionVolume == null)
+        {
+            switchZoneTest._transitionVolume = GameObject.Find("Transition Volume").GetComponent<Volume>();
+        }
+    }
 
 
     public override void interaction(GameObject source)
@@ -29,47 +47,32 @@ public class switchZoneTest : Interactable
     private IEnumerator camTransition()
     {
         StartCoroutine(volumeTransition());
-        playerVcam.Priority = 5;
-        transitionVcam.Priority = 15;
-        locomotion.LockPlayer = pov.lockCam = true;
-        yield return new WaitForSeconds(transitionTime);
-        pov.OverrideRotation = camRotationOveride;
-        locomotion.LockPlayer = pov.lockCam = false;
-        locomotion.TeleportPlayer(spawnTeleport.position);
-        playerVcam.Priority = 15;
-        transitionVcam.Priority = 5;
-        playerVcam.transform.rotation = spawnTeleport.rotation;
+        _playerVcam.Priority = 5;
+        _transitionVcam.Priority = 15;
+        _locomotion.LockPlayer = _pov.lockCam = true;
+        yield return new WaitForSeconds(_transitionTime);
+        _pov.OverrideRotation = _camRotationOveride;
+        _locomotion.LockPlayer = _pov.lockCam = false;
+        _locomotion.TeleportPlayer(_spawnTeleport.position);
+        _playerVcam.Priority = 15;
+        _transitionVcam.Priority = 5;
+        _playerVcam.transform.rotation = _spawnTeleport.rotation;
     }
 
 
     private IEnumerator volumeTransition()
     {
-        Debug.Log("start transition");
-        transitionVolume.weight = 0;
+        _transitionVolume.weight = 0;
 
-        float betterTransitionTime = .25f;
+        float betterTransitionTime = _transitionTime;
 
         float initTime = Time.time;
 
         float delta = Time.deltaTime;
 
-        Debug.Log(delta);
-
         int steps;
 
         steps = (int) (betterTransitionTime / delta);
-
-        /* Vieille boucle (obsolete mais je garde)
-        for (int i = 0; i < steps; i ++)
-        {
-            transitionVolume.weight = i / (float) steps;
-            yield return new WaitForSeconds((((float)betterTransitionTime / 2f) / (float) steps));
-        }
-        for (int i = steps; i > 0; i--)
-        {
-            transitionVolume.weight = i / (float) steps;
-            yield return new WaitForSeconds((((float)betterTransitionTime / 2f) / (float)steps));
-        }*/
 
         int currentSteps = 0;
 
@@ -79,27 +82,22 @@ public class switchZoneTest : Interactable
 
             if(currentSteps <= steps)
             {
-                transitionVolume.weight = currentSteps / (float)steps;
+                _transitionVolume.weight = currentSteps / (float)steps;
             } else
             {
-                transitionVolume.weight = (steps - (currentSteps - steps)) / (float)steps;
+                _transitionVolume.weight = (steps - (currentSteps - steps)) / (float)steps;
             }
 
             while((Time.time - stamp) < (betterTransitionTime / (float)steps))
             {
-                //Debug.Log("waiting");
-                //yield return new WaitForEndOfFrame();
                 yield return null;
             }
 
             currentSteps++;
         }
 
-        transitionVolume.weight = 0;
+        _transitionVolume.weight = 0;
 
         yield return new WaitForEndOfFrame();
-
-        Debug.Log("end transition");
-        Debug.Log(Time.time - initTime);
     }
 }
