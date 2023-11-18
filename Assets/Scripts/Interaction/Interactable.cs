@@ -4,5 +4,11 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-    public abstract void interaction(GameObject source);
+    protected InteractionManager _interactionManager;
+
+	private void Awake()
+	{
+		_interactionManager = FindObjectOfType<InteractionManager>();
+	}
+	public abstract void interaction(GameObject source);
 }
