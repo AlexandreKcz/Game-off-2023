@@ -492,10 +492,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e62e4d3256e7484b99d8f4424f8b185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnTeleport: {fileID: 0}
-  _transitionVcam: {fileID: 0}
+  _spawnTeleport: {fileID: 1837961089}
+  _transitionVcam: {fileID: 950513404}
   _camRotationOveride: {x: 0, y: 0, z: 0}
   _transitionTime: 0.25
+  _reverseFishEye: 1
 --- !u!1 &180104347 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -674449036139524865, guid: 595e3e53058ba37448bcc7507750c1fc, type: 3}
@@ -1734,6 +1735,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2686511265542725377}
     - target: {fileID: 8847089038585598691, guid: 72fddd7aae52b564d8c2252bc3f0fed8, type: 3}
+      propertyPath: m_Priority
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847089038585598691, guid: 72fddd7aae52b564d8c2252bc3f0fed8, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
       value: 1.7777778
       objectReference: {fileID: 0}
@@ -2460,6 +2465,7 @@ MonoBehaviour:
   _transitionVcam: {fileID: 244924302}
   _camRotationOveride: {x: 180, y: 0, z: 0}
   _transitionTime: 0.25
+  _reverseFishEye: 0
 --- !u!1001 &2145494322
 PrefabInstance:
   m_ObjectHideFlags: 0

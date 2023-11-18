@@ -1,8 +1,10 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class switchZoneTest : Interactable
 {
@@ -15,10 +17,12 @@ public class switchZoneTest : Interactable
     private static CinemachineVirtualCamera _playerVcam;
     private static CinemachinePOVExtension _pov;
     private static Volume _transitionVolume;
+    private static LensDistortion _transitionLensDistortion;
 
     [Header("Tweakables")]
     [SerializeField][Tooltip("cam final rotation on transition end")] private Vector3 _camRotationOveride = Vector3.zero;
     [SerializeField][Tooltip("transition time, must be changed in cmBrain too")] private float _transitionTime = .25f;
+    [SerializeField] private bool _reverseFishEye = false;
 
     private void Awake()
     {
@@ -34,6 +38,16 @@ public class switchZoneTest : Interactable
         if(switchZoneTest._transitionVolume == null)
         {
             switchZoneTest._transitionVolume = GameObject.Find("Transition Volume").GetComponent<Volume>();
+        }
+
+        if(switchZoneTest._transitionLensDistortion == null)
+        {
+            /* Recupere la lensDist depuis le volume via tryGet */
+            LensDistortion tmp;
+            if(switchZoneTest._transitionVolume.profile.TryGet<LensDistortion>(out tmp))
+            {
+                switchZoneTest._transitionLensDistortion = tmp;
+            }
         }
     }
 
@@ -62,6 +76,15 @@ public class switchZoneTest : Interactable
 
     private IEnumerator volumeTransition()
     {
+        if (_reverseFishEye)
+        {
+            switchZoneTest._transitionLensDistortion.intensity.value = 1f;
+        }
+        else
+        {
+            switchZoneTest._transitionLensDistortion.intensity.value = -1f;
+        }
+
         _transitionVolume.weight = 0;
 
         float betterTransitionTime = _transitionTime;
