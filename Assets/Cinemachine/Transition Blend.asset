@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CustomBlends:
   - m_From: Player Virtual Camera
-    m_To: B to M Cam transition
+    m_To: Transition M_To_S
     m_Blend:
       m_Style: 2
       m_Time: 1.5
@@ -25,9 +25,9 @@ MonoBehaviour:
         m_PostInfinity: 0
         m_RotationOrder: 0
   - m_From: Player Virtual Camera
-    m_To: M to S transition
+    m_To: Transition S_To_M
     m_Blend:
-      m_Style: 2
+      m_Style: 1
       m_Time: 1.5
       m_CustomCurve:
         serializedVersion: 2
@@ -35,18 +35,18 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: B to M Cam transition
+  - m_From: Transition M_To_S
     m_To: Player Virtual Camera
     m_Blend:
       m_Style: 0
-      m_Time: 0
+      m_Time: 2
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: M to S transition
+  - m_From: Transition S_To_M
     m_To: Player Virtual Camera
     m_Blend:
       m_Style: 0

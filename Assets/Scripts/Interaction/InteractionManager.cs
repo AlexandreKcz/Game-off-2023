@@ -10,6 +10,14 @@ public class InteractionManager : MonoBehaviour
         set { _camera = value; }
     }
 
+    private bool _canInteract = true;
+
+    public bool CanInteract
+    {
+        get { return _canInteract; }
+        set { _canInteract = value; }
+    }
+
     [SerializeField] private LayerMask interactionLayer;
 
     [Range(0f, 20f)] [SerializeField] private float interactionDistance = 10f;
@@ -22,6 +30,8 @@ public class InteractionManager : MonoBehaviour
 
     public void checkForInteraction()
     {
+		if (!_canInteract) { return; }
+
         RaycastHit hit;
 
         if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out hit, interactionDistance, interactionLayer))
