@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class Observable : Interactable
 {
+	[Range(0f, 10f)] [SerializeField] private float scaleMultiplier = 1f;
+
 	private PlayerLocomotion _locomotion;
 	private CinemachinePOVExtension _cam;
 	private static GameObject _curseurUI, _iconStopObserve, _zoneObserve;
@@ -59,6 +61,7 @@ public class Observable : Interactable
 
 		itemObserve = Instantiate(this.gameObject, new Vector3(1000, 1000, 1000), Quaternion.identity);
 
+		Observable._scriptObserveMouse.ScaleMultiplier = scaleMultiplier; // IMPORTANT : définir le multiplicateur avant de définir l'objet
 		Observable._scriptObserveMouse.ObjetObserve = itemObserve;
 
 		Observable._cameraObserve.enabled = true;

@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class ObserveMouseHandler : MonoBehaviour, IDragHandler, IScrollHandler
 {
 	private GameObject _objetObserve;
+	private float _scaleMultiplier;
 
 	private int etatZoom = 1; // 0 = dézoomé, 1 = normal, 2 = zoomé
 
@@ -16,6 +17,12 @@ public class ObserveMouseHandler : MonoBehaviour, IDragHandler, IScrollHandler
 	[SerializeField]
 	private Camera observerCamera;
 
+	public float ScaleMultiplier
+	{
+		get { return _scaleMultiplier; }
+		set { _scaleMultiplier = value; }
+	}
+
 	public GameObject ObjetObserve
 	{
 		get { return _objetObserve; }
@@ -23,7 +30,7 @@ public class ObserveMouseHandler : MonoBehaviour, IDragHandler, IScrollHandler
 		{
 			etatZoom = 1;
 			_objetObserve = value;
-			_objetObserve.transform.localScale = new Vector3(this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom]);
+			_objetObserve.transform.localScale = new Vector3(this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom]) * this._scaleMultiplier;
 		}
 	}
 
@@ -38,6 +45,6 @@ public class ObserveMouseHandler : MonoBehaviour, IDragHandler, IScrollHandler
 		if (eventData.scrollDelta.normalized.y > 0 && etatZoom != 2) { etatZoom++; }
 		if (eventData.scrollDelta.normalized.y < 0 && etatZoom != 0) { etatZoom--; }
 
-		_objetObserve.transform.localScale = new Vector3(this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom]);
+		_objetObserve.transform.localScale = new Vector3(this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom]) * this._scaleMultiplier;
 	}
 }
