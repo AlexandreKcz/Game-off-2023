@@ -902,8 +902,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tabZoomScales:
   - 1
-  - 4.25
-  - 7.5
+  - 5
+  - 10
   sensibility: 1
   observerCamera: {fileID: 973618839}
 --- !u!1001 &653417819

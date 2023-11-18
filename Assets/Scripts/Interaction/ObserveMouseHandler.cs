@@ -19,7 +19,12 @@ public class ObserveMouseHandler : MonoBehaviour, IDragHandler, IScrollHandler
 	public GameObject ObjetObserve
 	{
 		get { return _objetObserve; }
-		set { _objetObserve = value; }
+		set
+		{
+			etatZoom = 1;
+			_objetObserve = value;
+			_objetObserve.transform.localScale = new Vector3(this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom], this.tabZoomScales[etatZoom]);
+		}
 	}
 
 	public void OnDrag(PointerEventData eventData)
