@@ -22,6 +22,8 @@ public class InteractionManager : MonoBehaviour
 
     [Range(0f, 20f)] [SerializeField] private float interactionDistance = 10f;
 
+    [SerializeField] private ItemRecoil _recoil;
+
     private Camera _camera;
     private void Awake()
     {
@@ -31,6 +33,14 @@ public class InteractionManager : MonoBehaviour
     public void checkForInteraction()
     {
 		if (!_canInteract) { return; }
+
+        if (_recoil != null)
+        {
+            _recoil.recoil();
+        } else
+        {
+            Debug.LogWarning("Recoil is null, no itemAnimation played on InteractionManager");
+        }
 
         RaycastHit hit;
 
