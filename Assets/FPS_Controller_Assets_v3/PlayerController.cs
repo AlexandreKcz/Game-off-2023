@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private PlayerLocomotion _locomotion;
     private InteractionManager _interaction;
 
+    private InventoryManager _inventoryManager;
+
     private void Awake()
     {
         _inputManager = InputManager.Instance;
@@ -19,6 +21,15 @@ public class PlayerController : MonoBehaviour
         {
             _inputManager = FindObjectOfType<InputManager>();
             Debug.LogWarning("InputManager.Instance is null when calling instance from PlayerController, setting from FindObjectOfType");
+
+        }
+
+        _inventoryManager = InventoryManager.Instance;
+
+        if (_inventoryManager == null)
+        {
+            _inventoryManager = FindObjectOfType<InventoryManager>();
+            Debug.LogWarning("InventoryManager.Instance is null when calling instance from PlayerController, setting from FindObjectOfType");
 
         }
 
@@ -36,8 +47,10 @@ public class PlayerController : MonoBehaviour
         Vector2 movement = _inputManager.GetPlayerMovement();
         bool playerJumped = _inputManager.PlayerJumpedThisFrame();
         bool playerInteracted = _inputManager.PlayerInteractThisFrame();
+        int selectedItem = _inputManager.selectedItem();
 
         _locomotion.UpdatePlayerLocomotion(movement, playerJumped, delta);
         if (playerInteracted) _interaction.checkForInteraction();
+        if(selectedItem != -1) _inventoryManager.equipItem(selectedItem);
     }
 }

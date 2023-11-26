@@ -41,8 +41,9 @@ public class InventoryManager : MonoBehaviour
 
     public void equipItem(int index)
     {
-        if(index > playerInventory.Count) index = 0;
-        if(index < 0) index = playerInventory.Count;
+        if (index == crntHandIndex) return;
+        if(index > playerInventory.Count - 1) index = playerInventory.Count - 1;
+        if(index < 0) index = 0;
         crntHandIndex = index;
         updateHandItem();
     }

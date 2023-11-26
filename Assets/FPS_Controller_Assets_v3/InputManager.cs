@@ -63,4 +63,20 @@ public class InputManager : MonoBehaviour
     {
         return playerControls.Actions.Interact.triggered;
     }
+
+    public int selectedItem()
+    {
+        if (playerControls.Inventory.itm_1.triggered) return 0;
+        if (playerControls.Inventory.itm_2.triggered) return 1;
+        if (playerControls.Inventory.itm_3.triggered) return 2;
+        if (playerControls.Inventory.itm_4.triggered) return 3;
+        if (playerControls.Inventory.itm_5.triggered) return 4;
+        if (playerControls.Inventory.itm_6.triggered) return 5;
+        if (playerControls.Inventory.itm_7.triggered) return 6;
+        if (playerControls.Inventory.itm_8.triggered) return 7;
+        if (playerControls.Inventory.itm_9.triggered) return 8;
+        if (playerControls.Inventory.itm_10.triggered) return 9;
+
+        return -1;
+    }
 }
