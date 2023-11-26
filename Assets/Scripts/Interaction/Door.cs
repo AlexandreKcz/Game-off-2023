@@ -13,7 +13,17 @@ public class Door : Interactable
         }
     }
 
+    public bool Locked
+    {
+        get { return _locked; }
+        set
+        {
+            _locked = value;
+        }
+    }
+
     [SerializeField][Tooltip("Invert Door Opening")] private bool _invert = false;
+    [SerializeField][Tooltip("Door Locked ?")] private bool _locked = false;
 
     private Animator _animator;
     private bool _opened = false;
@@ -57,6 +67,11 @@ public class Door : Interactable
     {
         if (_animator != null)
         {
+            if (this._locked)
+            {
+                _animator.SetTrigger("Locked");
+                return;
+            }
             _animator.SetBool("Opened", this._opened);
             _animator.SetInteger("Direction", this._direction);
         }
