@@ -26,19 +26,24 @@ public class Door : Interactable
         /* Corrige l'orientation */
         float z = this._parentTransformForward.z;
         float x = this._parentTransformForward.x;
-        this._parentTransformForward.x = z;
-        this._parentTransformForward.z = x;
+        this._parentTransformForward.x = Mathf.Abs(z);
+        this._parentTransformForward.z = Mathf.Abs(x);
     }
 
     public override void interaction(GameObject source)
     {
         this._opened = !this._opened;
 
-        int dirCalc = (int) (Vector3.Scale(this.transform.position, this._parentTransformForward).magnitude - Vector3.Scale(source.transform.position, this._parentTransformForward).magnitude);
+        float dirCalc = Vector3.Scale(this.transform.position, this._parentTransformForward).magnitude - Vector3.Scale(source.transform.position, this._parentTransformForward).magnitude;
 
-        this._direction = dirCalc;
-        //Debug.Log(this.transform.parent.transform.parent.forward);
-        //Debug.Log(this.transform.position.x - source.transform.position.x);
+        //float dirCalc = (Vector3.Scale(this.transform.position, this._parentTransformForward) - Vector3.Scale(source.transform.position, this._parentTransformForward)).magnitude;
+
+        Debug.Log(dirCalc);
+
+        this._direction = dirCalc > 0 ? 1 : -1;
+        Debug.Log(this.transform.parent.transform.parent.forward);
+        Debug.Log("x : " + (this.transform.position.x - source.transform.position.x));
+        Debug.Log("y : " + (this.transform.position.z - source.transform.position.z));
         //Debug.Log(Vector3.Scale(this.transform.position, this._parentTransformForward).magnitude - Vector3.Scale(source.transform.position, this._parentTransformForward).magnitude);
         this.updateDoor();
     }
