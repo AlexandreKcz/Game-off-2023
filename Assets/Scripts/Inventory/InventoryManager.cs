@@ -29,14 +29,14 @@ public class InventoryManager : MonoBehaviour
         Debug.Log(playerInventory[0]);
     }
 
-    public void addItem(Item itm)
+    public void addItem(string itm)
     {
-        playerInventory.Add(itm.item_name);
+        playerInventory.Add(itm);
     }
 
-    public void removeItem(Item itm)
+    public void removeItem(string itm)
     {
-        playerInventory.Remove(itm.item_name);
+        playerInventory.Remove(itm);
     }
 
     public void equipItem(int index)
