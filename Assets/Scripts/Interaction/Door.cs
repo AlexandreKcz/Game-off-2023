@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 public class Door : Interactable
 {
@@ -11,6 +12,8 @@ public class Door : Interactable
             this.updateDoor();
         }
     }
+
+    [SerializeField][Tooltip("Invert Door Opening")] private bool _invert = false;
 
     private Animator _animator;
     private bool _opened = false;
@@ -30,35 +33,27 @@ public class Door : Interactable
     {
         this._opened = !this._opened;
 
-        float dirCalc = 0;
-        Debug.Log("orientation : " + "x : " + this._parentTransformForward.x + " y : " + this._parentTransformForward.y + " z : " + this._parentTransformForward.z); ;
-        if (Mathf.Abs(this._parentTransformForward.x) > 0)
-        {
-            Debug.Log("using z from x as compatative");
-            dirCalc = this._parentTransform.position.z - source.transform.position.z;
-        }
-        else if (Mathf.Abs(this._parentTransformForward.z) > 0)
-        {
-            Debug.Log("using x from z as compatative");
-            dirCalc = this._parentTransform.position.x - source.transform.position.x;
-        }
+        this.processDirection(source.transform);
 
-        //float dirCalc = Vector3.Scale(this._parentTransform.position, this._parentTransformForward).magnitude - Vector3.Scale(source.transform.position, this._parentTransformForward).magnitude;
-
-        //float dirCalc = (Vector3.Scale(this.transform.position, this._parentTransformForward) - Vector3.Scale(source.transform.position, this._parentTransformForward)).magnitude;
-
-        Debug.Log((int)dirCalc);
-
-        this._direction = (int) dirCalc;
-        /*
-        Debug.Log(this.transform.parent.transform.parent.forward);
-        Debug.Log("x : " + (this.transform.position.x - source.transform.position.x));
-        Debug.Log("y : " + (this.transform.position.z - source.transform.position.z));*/
-        //Debug.Log(Vector3.Scale(this.transform.position, this._parentTransformForward).magnitude - Vector3.Scale(source.transform.position, this._parentTransformForward).magnitude);
         this.updateDoor();
     }
 
-    private void updateDoor()
+    private void processDirection(Transform source) //process de la direction du joueur, determine le sens d'ouverture de la porte
+    {
+        float dirCalc = 0;
+        if (Mathf.Abs(this._parentTransformForward.x) > 0)
+        {
+            dirCalc = this._parentTransform.position.z - source.position.z;
+        }
+        else if (Mathf.Abs(this._parentTransformForward.z) > 0)
+        {
+            dirCalc = this._parentTransform.position.x - source.position.x;
+        }
+        if (this._invert) dirCalc *= -1;
+        this._direction = (int)dirCalc;
+    }
+
+    private void updateDoor() //Update des valeurs d'animator, reste géré automatiquement
     {
         if (_animator != null)
         {
