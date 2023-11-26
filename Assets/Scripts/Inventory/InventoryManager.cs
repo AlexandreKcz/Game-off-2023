@@ -19,7 +19,14 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        playerInventory = new List<string>();
+        //playerInventory = new List<string>();
+    }
+
+    private void Start()
+    {
+        equipItem(0);
+        updateHandItem();
+        Debug.Log(playerInventory[0]);
     }
 
     public void addItem(Item itm)
@@ -37,13 +44,23 @@ public class InventoryManager : MonoBehaviour
         if(index > playerInventory.Count) index = 0;
         if(index < 0) index = playerInventory.Count;
         crntHandIndex = index;
+        updateHandItem();
+    }
+
+    public void equipItemByName(string name)
+    {
+        if(!playerInventory.Contains(name)) return;
+        crntHandIndex = playerInventory.IndexOf(name);
+        updateHandItem();
     }
 
     public void updateHandItem()
     {
-        foreach(Item itm in itemList)
+        if(playerInventory.Count == 0) return;
+        string crntName = playerInventory[crntHandIndex];
+        foreach (Item itm in itemList)
         {
-            itm.item_container.SetActive(itm.item_name == playerInventory[crntHandIndex]);
+            itm.item_container.SetActive(itm.item_name == crntName);
         }
     }
 }
