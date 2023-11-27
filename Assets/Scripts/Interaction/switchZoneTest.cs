@@ -18,6 +18,7 @@ public class switchZoneTest : Interactable
     private static CinemachinePOVExtension _pov;
     private static Volume _transitionVolume;
     private static LensDistortion _transitionLensDistortion;
+    private static InventoryManager _inventoryManager;
 
     [Header("Tweakables")]
     [SerializeField][Tooltip("cam final rotation on transition end")] private Vector3 _camRotationOveride = Vector3.zero;
@@ -49,6 +50,18 @@ public class switchZoneTest : Interactable
                 switchZoneTest._transitionLensDistortion = tmp;
             }
         }
+
+        if(switchZoneTest._inventoryManager == null)
+        {
+            if(InventoryManager.Instance != null)
+            {
+                switchZoneTest._inventoryManager = InventoryManager.Instance;
+            }
+            else
+            {
+                switchZoneTest._inventoryManager = FindObjectOfType<InventoryManager>();
+            }
+        }
     }
 
 
@@ -61,6 +74,7 @@ public class switchZoneTest : Interactable
     private IEnumerator camTransition()
     {
         StartCoroutine(volumeTransition());
+        switchZoneTest._inventoryManager.animTrigger();
         _playerVcam.Priority = 5;
         _transitionVcam.Priority = 15;
         _locomotion.LockPlayer = _pov.lockCam = true;

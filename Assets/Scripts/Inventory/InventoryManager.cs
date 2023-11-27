@@ -11,11 +11,15 @@ public class InventoryManager : MonoBehaviour
         get { return instance; }
     }
 
-    public int crntHandIndex = 0;
+    [SerializeField] private int crntHandIndex = 0;
 
-    public List<string> playerInventory;
+    [SerializeField] private List<string> playerInventory;
 
-    public Item[] itemList;
+    [SerializeField] private Item[] itemList;
+
+    [SerializeField] private Animator _itemAnim;
+
+    private bool _isSwitching = false;
 
     private void Awake()
     {
@@ -39,20 +43,24 @@ public class InventoryManager : MonoBehaviour
         playerInventory.Remove(itm);
     }
 
-    public void equipItem(int index)
+    public void equipItem(int index, bool fromKeyboard = false)
     {
+        Debug.Log(crntHandIndex);
         if (index == crntHandIndex) return;
-        if(index > playerInventory.Count - 1) index = playerInventory.Count - 1;
-        if(index < 0) index = 0;
+        if (_isSwitching) return;
+        if(index > playerInventory.Count - 1) return;
+        if(index < 0) return;
         crntHandIndex = index;
-        updateHandItem();
+        _itemAnim.SetTrigger("ItemDown");
+        StartCoroutine(delayedHandUpdateForAnim());
     }
 
     public void equipItemByName(string name)
     {
-        if(!playerInventory.Contains(name)) return;
+        if (!playerInventory.Contains(name)) return;
         crntHandIndex = playerInventory.IndexOf(name);
-        updateHandItem();
+        _itemAnim.SetTrigger("ItemDown");
+        StartCoroutine(delayedHandUpdateForAnim());
     }
 
     public void updateHandItem()
@@ -63,5 +71,19 @@ public class InventoryManager : MonoBehaviour
         {
             itm.item_container.SetActive(itm.item_name == crntName);
         }
+    }
+
+    public void animTrigger()
+    {
+        _itemAnim.SetTrigger("ItemDown");
+    }
+
+    private IEnumerator delayedHandUpdateForAnim()
+    {
+        _isSwitching = true;
+        yield return new WaitForSeconds(.35f);
+        updateHandItem();
+        yield return new WaitForSeconds(.15f);
+        _isSwitching = false;
     }
 }

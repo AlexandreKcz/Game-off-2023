@@ -51,6 +51,6 @@ public class PlayerController : MonoBehaviour
 
         _locomotion.UpdatePlayerLocomotion(movement, playerJumped, delta);
         if (playerInteracted) _interaction.checkForInteraction();
-        if(selectedItem != -1) _inventoryManager.equipItem(selectedItem);
+        if(selectedItem != -1) _inventoryManager.equipItem(selectedItem, true);
     }
 }

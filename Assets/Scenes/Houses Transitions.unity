@@ -506,6 +506,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 125339923}
+  - component: {fileID: 125339924}
   m_Layer: 8
   m_Name: Item
   m_TagString: Untagged
@@ -529,6 +530,25 @@ Transform:
   m_Father: {fileID: 694074501}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &125339924
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125339922}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c1f722ba782600d47945e11159ed7b77, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &180104347 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -674449036139524865, guid: 595e3e53058ba37448bcc7507750c1fc, type: 3}
@@ -1726,7 +1746,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 616ca39d00441094aa560d2138bb87fe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1419442103181460570, guid: 616ca39d00441094aa560d2138bb87fe, type: 3}
       propertyPath: m_Layer
@@ -2380,6 +2400,7 @@ MonoBehaviour:
   - item_name: Evil_Turters
     item_container: {fileID: 1040633914}
     item_desc: "Version mal\xE9fique de turters"
+  _itemAnim: {fileID: 125339924}
 --- !u!4 &1366228461
 Transform:
   m_ObjectHideFlags: 0
@@ -3329,11 +3350,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4011476298286834983, guid: 1a42d095e6de3ec4ab4906420fafcc1d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.3826829
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011476298286834983, guid: 1a42d095e6de3ec4ab4906420fafcc1d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011476298286834983, guid: 1a42d095e6de3ec4ab4906420fafcc1d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9238798
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011476298286834983, guid: 1a42d095e6de3ec4ab4906420fafcc1d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4011476298286834983, guid: 1a42d095e6de3ec4ab4906420fafcc1d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
