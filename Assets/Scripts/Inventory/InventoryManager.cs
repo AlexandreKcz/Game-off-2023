@@ -43,6 +43,23 @@ public class InventoryManager : MonoBehaviour
         playerInventory.Remove(itm);
     }
 
+    public void scrollItem(float scrollValue)
+    {
+        if (_isSwitching) return;
+        if (scrollValue == 0) return;
+        if(scrollValue > 0)
+        {
+            crntHandIndex++;
+            if (crntHandIndex > playerInventory.Count - 1) crntHandIndex = 0;
+        } else
+        {
+            crntHandIndex--;
+            if (crntHandIndex < 0) crntHandIndex = playerInventory.Count - 1;
+        }
+        _itemAnim.SetTrigger("ItemDown");
+        StartCoroutine(delayedHandUpdateForAnim());
+    }
+
     public void equipItem(int index, bool fromKeyboard = false)
     {
         Debug.Log(crntHandIndex);

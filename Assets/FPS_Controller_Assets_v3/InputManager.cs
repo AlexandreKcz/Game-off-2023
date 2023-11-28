@@ -79,4 +79,9 @@ public class InputManager : MonoBehaviour
 
         return -1;
     }
+
+    public float getScrollValue()
+    {
+        return playerControls.Inventory.scroll.ReadValue<float>();
+    }
 }

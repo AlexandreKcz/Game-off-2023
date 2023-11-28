@@ -48,9 +48,11 @@ public class PlayerController : MonoBehaviour
         bool playerJumped = _inputManager.PlayerJumpedThisFrame();
         bool playerInteracted = _inputManager.PlayerInteractThisFrame();
         int selectedItem = _inputManager.selectedItem();
+        float scroll = _inputManager.getScrollValue();
 
         _locomotion.UpdatePlayerLocomotion(movement, playerJumped, delta);
         if (playerInteracted) _interaction.checkForInteraction();
         if(selectedItem != -1) _inventoryManager.equipItem(selectedItem, true);
+        _inventoryManager.scrollItem(scroll);
     }
 }
