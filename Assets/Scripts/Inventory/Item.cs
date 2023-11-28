@@ -8,4 +8,5 @@ public class Item
     public string item_name;
     public GameObject item_container;
     [TextArea] public string item_desc;
+    public Sprite itemIcon;
 }

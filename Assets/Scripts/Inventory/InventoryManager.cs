@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Item[] itemList;
 
     [SerializeField] private Animator _itemAnim;
+
+    [SerializeField] private Image[] _inventoryImages;
 
     private bool _isSwitching = false;
 
@@ -88,11 +91,28 @@ public class InventoryManager : MonoBehaviour
         {
             itm.item_container.SetActive(itm.item_name == crntName);
         }
+
+        Item previous = null, current = null, next = null;
+        if((crntHandIndex - 1) >= 0) previous = getItemByName(playerInventory[crntHandIndex - 1]);
+        current = getItemByName(playerInventory[crntHandIndex]);
+        if ((crntHandIndex + 1) < playerInventory.Count) next = getItemByName(playerInventory[crntHandIndex + 1]);
+        if (previous != null) _inventoryImages[0].sprite = previous.itemIcon;
+        if (current != null) _inventoryImages[1].sprite = current.itemIcon;
+        if (next != null) _inventoryImages[2].sprite = next.itemIcon;
     }
 
     public void animTrigger()
     {
         _itemAnim.SetTrigger("ItemDown");
+    }
+
+    private Item getItemByName(string name)
+    {
+        foreach (Item itm in itemList)
+        {
+            if(itm.item_name.Equals(name)) return itm;
+        }
+        return null;
     }
 
     private IEnumerator delayedHandUpdateForAnim()

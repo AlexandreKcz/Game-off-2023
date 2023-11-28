@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 79529776}
   - component: {fileID: 79529775}
   m_Layer: 5
-  m_Name: TffffempCanvas
+  m_Name: TempCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -974,7 +974,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.389886, y: 1}
+    m_SensorSize: {x: 2.3402555, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1790,7 +1790,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.389886, y: 1}
+    m_SensorSize: {x: 2.3402555, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1937,7 +1937,7 @@ GameObject:
   - component: {fileID: 981403876}
   - component: {fileID: 981403875}
   m_Layer: 5
-  m_Name: Panel2
+  m_Name: itm_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2833,7 +2833,7 @@ GameObject:
   - component: {fileID: 1306633860}
   - component: {fileID: 1306633859}
   m_Layer: 5
-  m_Name: Panel2 (1)
+  m_Name: itm_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3001,13 +3001,20 @@ MonoBehaviour:
   - item_name: Turters
     item_container: {fileID: 1482296459}
     item_desc: une tortue plutot stylee, mais inutile pour le moment
+    itemIcon: {fileID: 21300000, guid: 797810ac1f8a7eb4c8d7b7dab1df20b5, type: 3}
   - item_name: Evil_Turters
     item_container: {fileID: 1040633914}
     item_desc: "Version mal\xE9fique de turters"
+    itemIcon: {fileID: 21300000, guid: 2e0f8672a2f512e4d85f114806aee8fc, type: 3}
   - item_name: Neutral_Turters
     item_container: {fileID: 2079759195}
     item_desc: Version neutre de turters
+    itemIcon: {fileID: 21300000, guid: c90ae9bb662881d47bc40c33bf157354, type: 3}
   _itemAnim: {fileID: 125339924}
+  _inventoryImages:
+  - {fileID: 981403875}
+  - {fileID: 1306633859}
+  - {fileID: 2021130285}
 --- !u!4 &1366228461
 Transform:
   m_ObjectHideFlags: 0
@@ -3616,7 +3623,7 @@ GameObject:
   - component: {fileID: 2021130286}
   - component: {fileID: 2021130285}
   m_Layer: 5
-  m_Name: Panel2 (2)
+  m_Name: itm_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
