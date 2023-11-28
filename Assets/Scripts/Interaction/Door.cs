@@ -70,8 +70,19 @@ public class Door : Interactable
             if (this._locked)
             {
                 _animator.SetTrigger("Locked");
+                AudioManager.instance.Play("door_locked");
                 return;
             }
+
+            if (this._opened)
+            {
+                AudioManager.instance.Play("door_open");
+            }
+            else
+            {
+                AudioManager.instance.Play("door_close");
+            }
+
             _animator.SetBool("Opened", this._opened);
             _animator.SetInteger("Direction", this._direction);
         }

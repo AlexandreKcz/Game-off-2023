@@ -32,6 +32,7 @@ public class PlayerLocomotion : MonoBehaviour
     #endregion
 
     private CharacterController _controller;
+    private AudioManager _audioManager;
 
     private Transform _cameraTransform;
 
@@ -45,6 +46,8 @@ public class PlayerLocomotion : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
 
+        _audioManager = AudioManager.instance;
+
         _cameraTransform = _camera.transform;
     }
 
@@ -57,11 +60,35 @@ public class PlayerLocomotion : MonoBehaviour
         bool isClimbingLadder = Physics.Raycast(gameObject.transform.position, new Vector3(_cameraTransform.forward.x, 0, _cameraTransform.forward.z), out climbPoint, 0.75f, LayerMask.GetMask("Ladder"));
         Vector3 normalLadderReflect = Vector3.Reflect(climbPoint.normal, climbPoint.normal);
 
+        /*-----Sounds-----*/
+        string currentFootstepSound = "footsteps_wood";
+        string currentLadderClimbSound = "ladder_climb_wood";
+
+        if (((movement.x == 0 && movement.y == 0) || !groundedPlayer || isClimbingLadder) && _audioManager.IsPlaying(currentFootstepSound))
+        {
+            _audioManager.Stop(currentFootstepSound);
+        }
+        if (movement.y == 0 && _audioManager.IsPlaying(currentLadderClimbSound))
+        {
+            _audioManager.Stop(currentLadderClimbSound);
+        }
+
         if (isClimbingLadder && (Mathf.Abs(gameObject.transform.forward.x - normalLadderReflect.x) < climbAngleOffset && Mathf.Abs(gameObject.transform.forward.z - normalLadderReflect.z) < climbAngleOffset))
 		{
+            // Ladder Climb Sound
+            if (movement.y != 0 && !_audioManager.IsPlaying(currentLadderClimbSound))
+            {
+                _audioManager.Play(currentLadderClimbSound);
+            }
+
             Vector3 moveClimb = new Vector3(0f, movement.y*climbSpeed, 0f);
             _controller.Move(moveClimb * delta);
             return;
+        }
+
+        if (_audioManager.IsPlaying(currentLadderClimbSound))
+        {
+            _audioManager.Stop(currentLadderClimbSound);
         }
 
         groundedPlayer = _controller.isGrounded;
@@ -94,6 +121,13 @@ public class PlayerLocomotion : MonoBehaviour
         {
             _playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
         }
+
+        
+        // Footstep Sound
+        if((movement.x != 0 || movement.y != 0) && groundedPlayer && !_audioManager.IsPlaying(currentFootstepSound))
+		{
+            _audioManager.Play(currentFootstepSound);
+		}
 
         _playerVelocity.y += gravityValue * delta;
         _controller.Move(_playerVelocity * delta);
